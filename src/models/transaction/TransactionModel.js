@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const TransactionSchema = new mongoose.Schema(
     {
         userId: {
-            type: String,
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"users",
             required: true,
         },
         amount: {
@@ -27,7 +28,7 @@ const TransactionSchema = new mongoose.Schema(
         },
         date: {
             type: Date,
-            required: [true, "data is required"],
+            required: [true, "date is required"],
         },
     },
     { timestamps: true, versionKey:false }
