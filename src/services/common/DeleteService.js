@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 const DeleteService= async (req,res, Model) => {
     try{
 
@@ -13,4 +14,5 @@ const DeleteService= async (req,res, Model) => {
           res.status(500).json({message: "error", data: error.toString()});
     }
 }
-module.exports=DeleteService
+
+export default DeleteService;

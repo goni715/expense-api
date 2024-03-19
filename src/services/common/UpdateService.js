@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const UpdateService= async (req, res,DataModel) => {
+import mongoose from "mongoose";
+
+const UpdateService= async (req, res,Model) => {
 
     try{
         let ID = req.params.id;
@@ -7,7 +8,7 @@ const UpdateService= async (req, res,DataModel) => {
         let UpdateQueryObject = {_id: new ObjectId(ID)};
         let PostBody=req.body;
 
-        let Update = await DataModel.updateOne(UpdateQueryObject,PostBody);
+        let Update = await Model.updateOne(UpdateQueryObject,PostBody);
         res.status(200).json({message: "success", data: Update});
 
     }
@@ -15,5 +16,8 @@ const UpdateService= async (req, res,DataModel) => {
         res.status(500).json({message: "error", data: error});
     }
 }
-module.exports=UpdateService
+
+export default UpdateService;
+
+
 

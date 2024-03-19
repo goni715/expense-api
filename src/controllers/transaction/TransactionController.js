@@ -1,19 +1,11 @@
-import TransactionModel from "../../models/transaction/TransactionModel.js";
-import CreateService from "../../services/common/CreateService.js";
 import mongoose from "mongoose";
-import transactionModel from "../../models/transaction/TransactionModel.js";
+import TransactionModel from "../../models/transaction/TransactionModel.js";
+import DeleteService from "../../services/common/DeleteService.js";
+import CreateWithUserIdService from "../../services/common/CreateWithUserIdService.js";
+import UpdateService from "../../services/common/UpdateService.js";
 
 const addTransaction = async (req, res) => {
-    try{
-        const loginUserId = req.headers.id;
-        const reqBody = req.body;
-        reqBody.userId=loginUserId;
-        let data = await TransactionModel.create(reqBody)
-        res.status(201).json({status: true,message: "success", data: data});
-    }
-    catch(error){
-        res.status(500).json({status:false, message: "error", data: error});
-    }
+    await CreateWithUserIdService(req, res, TransactionModel)
 }
 
 
@@ -89,5 +81,32 @@ const getAllTransaction = async (req, res) => {
     }
 }
 
+const getTransactionsReport = async (req, res) => {
+    try{
+        const loginUserId = req.headers.id;
+        const ObjectId = mongoose.Types.ObjectId;
 
-export {addTransaction, getAllTransaction};
+
+        let transactions = await TransactionModel.find({userId: new ObjectId(loginUserId)}).sort({date:1});
+
+
+        res.status(200).json({status:true, message: "success", data:transactions})
+    }
+    catch(error){
+        res.status(500).json({status:true, message: "error", data:error.toString()})
+    }
+}
+
+
+
+const deleteTransaction = async (req, res) => {
+    await DeleteService(req, res, TransactionModel)
+}
+
+const updateTransaction = async (req, res) => {
+    await UpdateService(req, res, TransactionModel)
+}
+
+
+
+export {addTransaction, getAllTransaction, getTransactionsReport, deleteTransaction, updateTransaction};
